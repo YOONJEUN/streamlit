@@ -29,6 +29,10 @@ hr['월급여구간'] = pd.qcut(
     labels=['하위 25%', '25~50%', '50~75%', '상위 25%']
 )
 
+# KPI 3개
+total_employees = len(hr)
+total_attritions = hr['퇴직'].sum()
+overall_rate = round(hr['퇴직'].mean() * 100 , 1)
 
 # 사이드바 필터
 st.sidebar.title("조회 조건")
@@ -44,10 +48,7 @@ if dept != "전체": # 전체가 아니면 , 개발부나 영업부인거니까 
 
 hr = hr[(hr["근속연수"] >= min_tenure) & (hr["근속연수"] <= max_tenure)]
 
-# KPI 3개
-total_employees = len(hr)
-total_attritions = hr['퇴직'].sum()
-overall_rate = round(hr['퇴직'].mean() * 100 , 1)
+
 
 col1, col2, col3 = st.columns(3)
 col1.metric(label="직원수", value=f"{total_employees}명", delta="+1명")
