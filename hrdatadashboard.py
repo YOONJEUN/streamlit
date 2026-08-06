@@ -7,6 +7,8 @@ import koreanize_matplotlib
 df = pd.read_csv("./HR Data.csv")
 hr = df.copy()
 
+st.title("HR 퇴직 현황 대시보드")
+
 # 퇴직 여부를 0과 1로 변환
 hr['퇴직'] = hr['퇴직여부'].map({'No': 0, 'Yes': 1}).astype('int8')
 
