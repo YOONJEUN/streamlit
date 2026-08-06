@@ -121,7 +121,7 @@ axes[2, 1].set_ylabel('퇴직률(%)')
 
 fig.subplots_adjust(
     hspace=0.45,
-    wspace=0.55
+    wspace=0.05
 )
 
 st.pyplot(fig)
