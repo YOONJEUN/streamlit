@@ -42,14 +42,17 @@ col3.metric(label="전체 퇴직률", value=f"{overall_rate:.1f}%", delta="-1.2%
 
 # 사이드바 필터
 st.sidebar.title("조회 조건")
-min_employees, max_employees = st.sidebar.slider("직원 수를 선택하세요", 
-                                         min_value=0, max_value=len(hr), value=(0, len(hr)), step=50)
 
-min_attritions, max_attritions = st.sidebar.slider("퇴직자 수를 선택하세요", 
-                                         min_value=0, max_value=hr['퇴직'].sum(), value=(0, hr['퇴직'].sum()), step=50)
+dept = st.sidebar.selectbox("부서를 선택하세요:", ["전체"] + list(hr['부서'].unique()))
 
-min_rate, max_rate = st.sidebar.slider("퇴직률을 선택하세요",
-                                         min_value=0.0, max_value=100.0, value=(0.0, 100.0), step=1.0)
+min_tenure, max_tenure = st.sidebar.slider("근속연수를 선택하세요", 
+                                         min_value=0, max_value=hr['근속연수'].max(), value=(0, hr['근속연수'].max()), step=1)
+
+# 데이터 필터링
+if dept != "전체": # 전체가 아니면 , 개발부나 영업부인거니까  해당하는 부서만 필터링
+    hr = hr[hr["부서"] == dept]
+
+hr = hr[(hr["근속연수"] >= min_tenure) & (hr["근속연수"] <= max_tenure)]
 
 def attritions_summary(data, group_column) :
     result = data.groupby(group_column, observed=True).agg(직원수 = ('퇴직', 'size'),
