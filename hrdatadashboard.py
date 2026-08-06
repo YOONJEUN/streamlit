@@ -7,6 +7,8 @@ import koreanize_matplotlib
 df = pd.read_csv("./HR Data.csv")
 hr = df.copy()
 
+total_employees = len(hr)
+
 # 퇴직 여부를 0과 1로 변환
 hr['퇴직'] = hr['퇴직여부'].map({'No': 0, 'Yes': 1}).astype('int8')
 
@@ -45,12 +47,13 @@ if dept != "전체": # 전체가 아니면 , 개발부나 영업부인거니까 
 hr = hr[(hr["근속연수"] >= min_tenure) & (hr["근속연수"] <= max_tenure)]
 
 # KPI 3개
-total_employees = len(hr)
+employees = len(hr)
 total_attritions = hr['퇴직'].sum()
 overall_rate = round(hr['퇴직'].mean() * 100 , 1)
 
-col1, col2, col3 = st.columns(3)
-col1.metric(label="직원수", value=f"{total_employees}명", delta="+1명")
+col0, col1, col2, col3 = st.columns(4)
+col0.metric(label="전체 직원수", value=f"{total_employees}명", delta="+1명")
+col1.metric(label="직원수", value=f"{employees}명", delta="+1명")
 col2.metric(label="총퇴직자수", value=f"{total_attritions:,}명", delta="-300명")
 col3.metric(label="전체 퇴직률", value=f"{overall_rate:.1f}%", delta="-1.2%")
 
