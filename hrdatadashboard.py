@@ -7,7 +7,6 @@ import koreanize_matplotlib
 st.set_page_config(
     page_title="HR 퇴직 현황 대시보드",
     page_icon="📊",
-    layout="wide"
 )
 st.caption("부서, 연령대, 근속연수, 야근, 출장, 급여에 따른 퇴직 현황 분석")
 
