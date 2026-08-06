@@ -78,19 +78,19 @@ fig, axes = plt.subplots(3, 2, figsize=(12, 15))
 
 # 1. 부서별 퇴직률
 ax1 = sns.barplot(data=department_result, x='부서', y='퇴직률', ax=axes[0, 0], color='skyblue')
-axes[0, 0].axvline(overall_rate, color='red', linestyle='--')
+axes[0, 0].axhline(overall_rate, color='purple', linestyle='--')
 axes[0, 0].set_title('부서별 퇴직률')
 axes[0, 0].set_ylabel('퇴직률(%)')
 
 # 2. 연령대별 퇴직률
 ax2 = sns.barplot(data=age_result, x='연령대', y='퇴직률', ax=axes[0, 1], color='skyblue')
-axes[0, 1].axhline(overall_rate, color='red', linestyle='--')
+axes[0, 1].axhline(overall_rate, color='yellow', linestyle='--')
 axes[0, 1].set_title('연령대별 퇴직률')
 axes[0, 1].set_ylabel('퇴직률(%)')
 
 # 3. 근속구간별 퇴직률
 ax3 = sns.barplot(data=tenure_result, x='근속구간', y='퇴직률', ax=axes[1, 0], color='skyblue')
-axes[1, 0].axhline(overall_rate, color='red', linestyle='--')
+axes[1, 0].axhline(overall_rate, color='blue', linestyle='--')
 axes[1, 0].set_title('근속구간별 퇴직률')
 axes[1, 0].set_ylabel('퇴직률(%)')
 
@@ -102,7 +102,7 @@ axes[1, 1].set_ylabel('퇴직률(%)')
 
 # 5. 출장 빈도별 퇴직률
 ax5 = sns.barplot(data=travel_result, x='출장빈도', y='퇴직률', ax=axes[2, 0], color='skyblue')
-axes[2, 0].axhline(overall_rate, color='red', linestyle='--')
+axes[2, 0].axhline(overall_rate, color='navy', linestyle='--')
 axes[2, 0].set_title('출장 빈도별 퇴직률')
 axes[2, 0].set_ylabel('퇴직률(%)')
 axes[2, 0].tick_params(axis='x', rotation=15)
