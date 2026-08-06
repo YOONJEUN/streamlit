@@ -29,16 +29,6 @@ hr['월급여구간'] = pd.qcut(
     labels=['하위 25%', '25~50%', '50~75%', '상위 25%']
 )
 
-# KPI 3개
-total_employees = len(hr)
-total_attritions = hr['퇴직'].sum()
-overall_rate = round(hr['퇴직'].mean() * 100 , 1)
-
-col1, col2, col3 = st.columns(3)
-col1.metric(label="직원수", value=f"{total_employees}명", delta="+1명")
-col2.metric(label="총퇴직자수", value=f"{total_attritions:,}명", delta="-300명")
-col3.metric(label="전체 퇴직률", value=f"{overall_rate:.1f}%", delta="-1.2%")
-
 
 # 사이드바 필터
 st.sidebar.title("조회 조건")
@@ -53,6 +43,17 @@ if dept != "전체": # 전체가 아니면 , 개발부나 영업부인거니까 
     hr = hr[hr["부서"] == dept]
 
 hr = hr[(hr["근속연수"] >= min_tenure) & (hr["근속연수"] <= max_tenure)]
+
+# KPI 3개
+total_employees = len(hr)
+total_attritions = hr['퇴직'].sum()
+overall_rate = round(hr['퇴직'].mean() * 100 , 1)
+
+col1, col2, col3 = st.columns(3)
+col1.metric(label="직원수", value=f"{total_employees}명", delta="+1명")
+col2.metric(label="총퇴직자수", value=f"{total_attritions:,}명", delta="-300명")
+col3.metric(label="전체 퇴직률", value=f"{overall_rate:.1f}%", delta="-1.2%")
+
 
 def attritions_summary(data, group_column) :
     result = data.groupby(group_column, observed=True).agg(직원수 = ('퇴직', 'size'),
@@ -70,7 +71,7 @@ travel_result = attritions_summary(hr, '출장빈도')
 income_result = attritions_summary(hr, '월급여구간')
 
 # 2행 3열 그래프 생성
-fig, axes = plt.subplots(2, 3, figsize=(16, 10))
+fig, axes = plt.subplots(3, 2, figsize=(16, 10))
 
 # 1. 부서별 퇴직률
 ax1 = sns.barplot(data=department_result, y='부서', x='퇴직률', ax=axes[0, 0])
@@ -86,28 +87,28 @@ axes[0, 1].set_ylabel('퇴직률(%)')
 
 # 3. 근속구간별 퇴직률
 ax3 = sns.barplot(data=tenure_result, x='근속구간', y='퇴직률', ax=axes[0, 2])
-axes[0, 2].axhline(overall_rate, color='red', linestyle='--')
-axes[0, 2].set_title('근속구간별 퇴직률')
-axes[0, 2].set_ylabel('퇴직률(%)')
+axes[1, 0].axhline(overall_rate, color='red', linestyle='--')
+axes[1, 0].set_title('근속구간별 퇴직률')
+axes[1, 0].set_ylabel('퇴직률(%)')
 
 # 4. 야근 여부별 퇴직률
 ax4 = sns.barplot(data=overtime_result, x='야근정도', y='퇴직률', ax=axes[1, 0])
-axes[1, 0].axhline(overall_rate, color='red', linestyle='--')
-axes[1, 0].set_title('야근 여부별 퇴직률')
-axes[1, 0].set_ylabel('퇴직률(%)')
+axes[1, 1].axhline(overall_rate, color='red', linestyle='--')
+axes[1, 1].set_title('야근 여부별 퇴직률')
+axes[1, 1].set_ylabel('퇴직률(%)')
 
 # 5. 출장 빈도별 퇴직률
 ax5 = sns.barplot(data=travel_result, x='출장빈도', y='퇴직률', ax=axes[1, 1])
-axes[1, 1].axhline(overall_rate, color='red', linestyle='--')
-axes[1, 1].set_title('출장 빈도별 퇴직률')
-axes[1, 1].set_ylabel('퇴직률(%)')
-axes[1, 1].tick_params(axis='x', rotation=15)
+axes[2, 0].axhline(overall_rate, color='red', linestyle='--')
+axes[2, 0].set_title('출장 빈도별 퇴직률')
+axes[2, 0].set_ylabel('퇴직률(%)')
+axes[2, 0].tick_params(axis='x', rotation=15)
 
 # 6. 월급여 구간별 퇴직률
 ax6 = sns.barplot(data=income_result, x='월급여구간', y='퇴직률', ax=axes[1, 2])
-axes[1, 2].axhline(overall_rate, color='red', linestyle='--')
-axes[1, 2].set_title('월급여 구간별 퇴직률')
-axes[1, 2].set_ylabel('퇴직률(%)')
+axes[2, 1].axhline(overall_rate, color='red', linestyle='--')
+axes[2, 1].set_title('월급여 구간별 퇴직률')
+axes[2, 1].set_ylabel('퇴직률(%)')
 
 st.pyplot(fig)
 
