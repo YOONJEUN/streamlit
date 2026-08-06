@@ -71,7 +71,7 @@ travel_result = attritions_summary(hr, '출장빈도')
 income_result = attritions_summary(hr, '월급여구간')
 
 # 2행 3열 그래프 생성
-fig, axes = plt.subplots(3, 2, figsize=(16, 30))
+fig, axes = plt.subplots(3, 2, figsize=(16, 20))
 
 # 1. 부서별 퇴직률
 ax1 = sns.barplot(data=department_result, y='부서', x='퇴직률', ax=axes[0, 0])
