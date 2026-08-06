@@ -4,10 +4,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import koreanize_matplotlib
 
+st.set_page_config(
+    page_title="HR 퇴직 현황 대시보드",
+    page_icon="📊",
+    layout="wide"
+)
+st.caption("부서, 연령대, 근속연수, 야근, 출장, 급여에 따른 퇴직 현황 분석")
+
 df = pd.read_csv("./HR Data.csv")
 hr = df.copy()
-
-st.title("HR 퇴직 현황 대시보드")
 
 # 퇴직 여부를 0과 1로 변환
 hr['퇴직'] = hr['퇴직여부'].map({'No': 0, 'Yes': 1}).astype('int8')
@@ -32,12 +37,14 @@ hr['월급여구간'] = pd.qcut(
 )
 
 # KPI 3개
+st.subheader("📌 주요 지표")
 total_employees = len(hr)
 total_attritions = hr['퇴직'].sum()
 overall_rate = round(hr['퇴직'].mean() * 100 , 1)
 
 # 사이드바 필터
-st.sidebar.title("조회 조건")
+st.sidebar.title("🔍 조회 조건")
+st.sidebar.markdown("---")
 
 dept = st.sidebar.selectbox("부서를 선택하세요:", ["전체"] + list(hr['부서'].unique()))
 
@@ -112,6 +119,11 @@ ax6 = sns.barplot(data=income_result, x='월급여구간', y='퇴직률', ax=axe
 axes[2, 1].axhline(overall_rate, color='orange', linestyle='--')
 axes[2, 1].set_title('월급여 구간별 퇴직률')
 axes[2, 1].set_ylabel('퇴직률(%)')
+
+fig.subplots_adjust(
+    hspace=0.45,
+    wspace=0.25
+)
 
 st.pyplot(fig)
 
